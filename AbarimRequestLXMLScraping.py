@@ -1,12 +1,16 @@
 import requests
 from lxml import html
 
-//get page
-page = requests.get("http://www.abarim-publications.com/Meaning/Abraham.html")
+nameArray = ['Mary','Abraham']
 
-//use lxml for xpath finding text
-tree = html.fromstring(page.content)
-text = tree.xpath('//article//b/text()')
+for nameKey in nameArray:
 
-for item in text:
+    #get page
+    page = requests.get("http://www.abarim-publications.com/Meaning/"+nameKey+".html")
+
+    #use lxml for xpath finding text
+    tree = html.fromstring(page.content)
+    text = tree.xpath('//article//b/text()')
+
+    for item in text:
         print item
