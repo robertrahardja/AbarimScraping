@@ -1,0 +1,65 @@
+import requests
+from lxml import html
+
+#Chapter list
+iterchap = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18']
+
+#Roman chapter list
+rom = ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii' ,'xiv' ,'xv' ,'xvi' ,'xvii', 'xiii' ,'xix' ,'xx' ,'xi' ,'xii' ,'xiii' ,'xiv' ,'xv']
+
+    #for item in iterchap:
+    #print chapter[item]
+
+
+    #for item in romanchap:
+    #print item
+
+def getText(url):
+    page = requests.get(url)
+    print "check if page exists"
+    #check if page exists
+    if page.status_code == 200:
+        #use lxml for xpath finding text
+        print "page exists"
+        tree = html.fromstring(page.content)
+        head1 = tree.xpath('//div/h1/text()[normalize-space()]')
+        head2 = tree.xpath('//div/h2/text()[normalize-space()]')
+        text = tree.xpath('//a[@class="scripRef"]/text()')
+            
+        print head1, head2
+            
+        toprint = ""
+        for item in text:
+            toprint = toprint + item + "\n"
+            
+            #print to file
+        print str(head1)+str(head2) + "\n" + toprint + "\n"
+        f.write(str(head1)+str(head2) + "\n" + toprint + "\n")
+    return;
+
+
+#open file Output.txt
+with open('Output.txt', 'w') as f:
+    #loop through each name in dictionary
+    
+    for iiterchap in iterchap:
+        if iiterchap == '04' or iiterchap == '05' or iiterchap == '03' or iiterchap == '06' or iiterchap =='09' or iiterchap == '18':
+            url = "http://www.ccel.org/ccel/pink/antichrist.chap"+iiterchap+".html"
+            #page = requests.get(url)
+            getText(url)
+            print url
+            for irom in rom:
+                url = "http://www.ccel.org/ccel/pink/antichrist.chap"+str(iiterchap)+"."+str(irom)+".html"
+                getText(url)
+                print url
+        else:
+            url = "http://www.ccel.org/ccel/pink/antichrist.chap"+iiterchap+".html"
+            #page = requests.get(url)
+            getText(url)
+            print url
+
+        
+
+
+#close file
+f.close()
